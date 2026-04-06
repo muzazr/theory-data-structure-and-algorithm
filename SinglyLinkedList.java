@@ -57,6 +57,45 @@ public class SinglyLinkedList {
         System.out.println("null");
     }
 
+    // Method bantuan untuk mengecek apakah suatu angka adalah bilangan prima
+private boolean isPrime(int n) {
+    if (n <= 1) return false;
+    for (int i = 2; i <= Math.sqrt(n); i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+
+public void removePrime() {
+    if (head == null) {
+        return;
+    }
+
+    // Geser head terus menerus sampai menemukan bilangan BUKAN prima atau list habis
+    while (head != null && isPrime(head.item)) {
+        head = head.next;
+    }
+
+    // Jika setelah head digeser ternyata list menjadi kosong (semua isinya prima)
+    if (head == null) {
+        tail = null;
+        return;
+    }
+
+    Node current = head;
+    while (current.next != null) {
+        if (isPrime(current.next.item)) {
+            current.next = current.next.next;
+            // Jangan geser 'current' di sini (current = current.next), 
+            // karena node yang baru saja menjadi 'current.next' BISA JADI bilangan prima juga.
+        } else {
+            // Jika BUKAN prima, baru kita aman untuk bergeser ke node selanjutnya
+            current = current.next;
+        }
+    }
+    tail = current;
+}
+
     public static void main(String[] args) {
        SinglyLinkedList list = new SinglyLinkedList();
 
